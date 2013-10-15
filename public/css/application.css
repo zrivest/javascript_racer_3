@@ -2,7 +2,7 @@
   margin: 20px auto;
   width: 600px;
   padding: 0px 20px 20px 20px;
-  border: 1px dotted black;
+  border: 3px solid red;
 }
 
 th {
@@ -39,4 +39,30 @@ th {
   background-image: url('../coyote-howling.jpg');
   background-size: 140px;
   font-weight: 30px;
+}
+
+h1 {
+  text-align: center;
+  text-transform: uppercase;
+  font-family: "Comic Sans MS";
+}
+
+.winner {
+  background-color: blue;
+  width: 400px;
+}
+
+.winner:hover {
+  transition-property: background-color, width;
+  transition-duration: 5s;
+  background-color:green;
+  width: 600px;
+}
+
+.winners {
+  text-align: center;
+}
+
+.losers {
+  text-align: center;
 }

@@ -8,7 +8,7 @@ end
 get '/results/:id' do
   @race_winner = Player.find(params[:id].to_i)
   @race_loser = Player.find(params[:id].to_i - 1)
-  @all_players = Player.all
+  @all_players = Player.all.reverse
   # binding.pry
   erb :results
 end

@@ -1,18 +1,20 @@
-<div class="winner"><%= @race_winner.name %> won the race! </div>
-<div class="loser"><%= @race_loser.name %> lost the race! </div>
+<div class="container">
+  <div class="winner"><h1><%= @race_winner.name %> won the race!</h1></div>
+  <div class="loser"><h2><%= @race_loser.name %> lost the race!</h2></div>
 
-<div class="winners">
-  WINNERS
-  <% count = 0 %>
-  <% @all_players.select do |winner| %>
-    <%= "#{count += 1}: #{winner.name}" if winner.win == true %>
-  <% end %>
-</div>
+  <div class="winners">
+    <h3>WINNERS</h3>
+    <% count = 0 %>
+    <% @all_players.select do |winner| %>
+      <ul id="winners"><%= "#{count += 1}: #{winner.name}" if winner.win == true %></ul>
+    <% end %>
+  </div>
 
-<div class="losers">
-  LOSERS
-  <% count = 0 %>
-  <% @all_players.map do |loser| %>
-    <%= "#{count += 1}: #{loser.name}" if loser.win == false %>
-  <% end %>
+  <div class="losers">
+    <h3>LOSERS</h3>
+    <% count = 0 %>
+    <% @all_players.map do |loser| %>
+      <ul id="losers"><%= "#{count += 1}: #{loser.name}" if loser.win == false %></ul>
+    <% end %>
+  </div>
 </div>
