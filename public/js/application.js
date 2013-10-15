@@ -16,7 +16,7 @@ $(document).ready(function() {
             console.log(winner)
              $.post('/results', winner, function(response){
              $('.racer_table').after(response);
-           
+
             });
 
 
@@ -44,7 +44,7 @@ $(document).ready(function() {
             console.log(winner)
              $.post('/results', winner, function(response){
              $('.racer_table').after(response);
-           
+
             });
 
            $('#player1_strip').children('.active').removeClass();
