@@ -1,58 +1,63 @@
 $(document).ready(function() {
-  var player1_counter = 0;
-  var player2_counter = 0;
+  console.log("got here")
+  var player1 = new Player("jim", 32, "#player1_strip");
+  var player2 = new Player("anne", 80, "#player2_strip");
 
-  $(document).on('keyup', function(e) {
-      if(e.keyCode == 80) {
-        $('#player1_strip .active').next().addClass('active');
-        $('#player1_strip .active').prev().removeClass('active');
-         player1_counter += 1;
-         if(player1_counter === 12) {
-           console.log($('#player1_strip .active'));
-           alert("Player 1 wins!");
-           player1_counter = 0;
-           player2_counter = 0;
-           var winner = {player_id : $('#player1_strip .active').attr('id')};
-            console.log(winner)
-             $.post('/results', winner, function(response){
-             $('.racer_table').after(response);
+  var game = new Game(player1, player2);
 
-            });
-
-
-
-           $('#player1_strip').children('.active').removeClass();
-           $('#player1_strip').children().first().addClass('active');
-           $('#player2_strip').children('.active').removeClass();
-           $('#player2_strip').children().first().addClass('active');
-
-
-         }
-      }
-  });
-  $(document).on('keyup', function(e) {
-      if(e.keyCode == 32) {
-        $('#player2_strip .active').next().addClass('active');
-        $('#player2_strip .active').prev().removeClass('active');
-        player2_counter += 1;
-         if(player2_counter === 12) {
-           console.log($('#player2_strip .active'));
-           alert("Player 2 wins!");
-           player1_counter = 0;
-           player2_counter = 0;
-           var winner = {player_id : $('#player2_strip .active').attr('id')};
-            console.log(winner)
-             $.post('/results', winner, function(response){
-             $('.racer_table').after(response);
-
-            });
-
-           $('#player1_strip').children('.active').removeClass();
-           $('#player1_strip').children().first().addClass('active');
-           $('#player2_strip').children('.active').removeClass();
-           $('#player2_strip').children().first().addClass('active');
-
-        }
-      }
+  $(document).on('keyup', function(event) {
+    console.log(event.which);
+    game.onKeyUp(event.which);
   });
 });
+
+function Player(name, keyCode, DOM_element){
+  this.counter = 0
+  this.name = name
+  this.keyCode = keyCode
+  this.DOM_element = DOM_element
+}
+
+Player.prototype.advance = function() {
+  this.counter += 1
+  console.log(this.counter)
+  if(this.counter <= 12){
+    $(this.DOM_element + ' .active').next().addClass('active');
+    $(this.DOM_element + ' .active').prev().removeClass('active');
+  } else {
+    this.counter = 0
+    this.persist_results();
+    }
+}
+
+Player.prototype.persist_results = function() {
+  var winner = {player_id : $(this.DOM_element + ' .active').attr('id')};
+  $.post('/results', winner, function(response){
+    $('.racer_table').after(response);
+  });
+}
+
+function Game(player1, player2){
+  this.player1 = player1
+  this.player2 = player2
+}
+
+Game.prototype.onKeyUp = function(keyCode) {
+  var playerToMove = this.findPlayerToMove(keyCode)
+  if (playerToMove) {
+    playerToMove.advance();
+  }
+}
+
+Game.prototype.findPlayerToMove = function(keyCode) {
+  if (keyCode === this.player1.keyCode) {
+    return this.player1
+  }
+  else if (keyCode === this.player2.keyCode) {
+    return this.player2
+  }
+  else {
+    return false
+  }
+}
+
